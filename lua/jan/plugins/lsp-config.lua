@@ -1,24 +1,3 @@
-local lua_ls_setup = {
-    Lua = {
-        runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = "LuaJIT",
-        },
-        diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = { "vim" },
-        },
-        workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = vim.api.nvim_get_runtime_file("", true),
-        },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-            enable = false,
-        },
-    },
-}
-
 return {
     {
 
@@ -47,16 +26,33 @@ return {
         "neovim/nvim-lspconfig",
         config = function()
             local lspconfig = require("lspconfig")
-            lspconfig.lua_ls.setup(lua_ls_setup)
-            lspconfig.tsserver.setup({})
-            lspconfig.html.setup({})
-            lspconfig.gopls.setup({})
-            lspconfig.dockerls.setup({})
-            lspconfig.cssls.setup({})
-            lspconfig.jsonls.setup({})
+            local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-            vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-            vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+            lspconfig.lua_ls.setup({
+                capabilities = capabilities
+            })
+            lspconfig.tsserver.setup({
+                capabilities = capabilities
+            })
+            lspconfig.html.setup({
+                capabilities = capabilities
+            })
+            lspconfig.gopls.setup({
+                capabilities = capabilities
+            })
+            lspconfig.dockerls.setup({
+                capabilities = capabilities
+            })
+            lspconfig.cssls.setup({
+                capabilities = capabilities
+            })
+            lspconfig.jsonls.setup({
+                capabilities = capabilities
+            })
+
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+            vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+            vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
         end
     }
 }

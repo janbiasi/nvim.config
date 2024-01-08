@@ -6,9 +6,21 @@ return {
 
         configs.setup({
             ensure_installed = {
+		"vimdoc",
                 "lua",
                 "javascript",
-                "html"
+		"typescript",
+                "html",
+		"go",
+		"gomod",
+		"graphql",
+		"groovy",
+		"java",
+		"json",
+		"rust",
+		"vim",
+		"yaml",
+		"zig"
             },
             sync_install = false,
             highlight = { enable = true },
