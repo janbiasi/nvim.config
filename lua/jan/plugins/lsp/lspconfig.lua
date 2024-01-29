@@ -1,35 +1,26 @@
 return {
     {
-
-        "williamboman/mason.nvim",
-        config = function()
-            require("mason").setup()
-        end
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "lua_ls",   -- Lua
-                    "tsserver", -- TypeScript
-                    "html",     -- HTML
-                    "gopls",    -- Go
-                    "dockerls", -- Docker
-                    "cssls",    -- CSS
-                    "jsonls",   -- JSON
-                }
-            })
-        end
-    },
-    {
         "neovim/nvim-lspconfig",
         config = function()
             local lspconfig = require("lspconfig")
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
             lspconfig.lua_ls.setup({
-                capabilities = capabilities
+                capabilities = capabilities,
+                settings = {
+                  Lua = {
+                    runtime = {
+                      version = 'LuaJIT',
+                    },
+                    diangostics = {
+                      globals = { "vim", "require" }
+                    },
+                    workspace = {
+                      -- Make the server aware of Neovim runtime files
+                      library = vim.api.nvim_get_runtime_file("", true),
+                    },
+                  }
+                }
             })
             lspconfig.tsserver.setup({
                 capabilities = capabilities
