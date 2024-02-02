@@ -1,30 +1,46 @@
 return {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPre", "BufNewFile" },
     build = ":TSUpdate",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects"
+    },
     config = function()
-        local configs = require("nvim-treesitter.configs")
+        local treesitter = require("nvim-treesitter.configs")
 
-        configs.setup({
-            ensure_installed = {
-		"vimdoc",
-                "lua",
-                "javascript",
-		"typescript",
-                "html",
-		"go",
-		"gomod",
-		"graphql",
-		"groovy",
-		"java",
-		"json",
-		"rust",
-		"vim",
-		"yaml",
-		"zig"
+        treesitter.setup({
+          -- syntax highlighting
+          highlight = { enable = true },
+          -- identation
+          indent = { enable = true },
+          -- installed syntax support
+          ensure_installed = {
+              "bash",
+              "css",
+              "dockerfile",
+              "gitignore",
+              "go",
+              "gomod",
+              "graphql",
+              "groovy",
+              "html",
+              "java",
+              "javascript",
+              "json",
+              "lua",
+              "kdl",
+              "markdown_inline",
+              "markdown",
+              "prisma",
+              "rust",
+              "tsx",
+              "typescript",
+              "vim",
+              "vimdoc",
+              "yaml",
+              "zig"
             },
             sync_install = false,
-            highlight = { enable = true },
-            indent = { enable = true }
         })
     end
 }
