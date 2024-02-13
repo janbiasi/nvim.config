@@ -15,6 +15,12 @@ vim.opt.scrolloff = 8
 vim.opt.colorcolumn = "120"
 vim.opt.signcolumn = "yes"
 
+-- hidden chars
+vim.opt.list = true
+vim.opt.listchars = {
+  space = '⋅',
+}
+
 -- cursor line
 vim.opt.cursorline = true -- highlight the current cursor line
 
