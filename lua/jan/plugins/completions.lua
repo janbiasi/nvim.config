@@ -3,25 +3,32 @@ return {
     "onsails/lspkind.nvim",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/nvim-cmp"
-    }
+      "hrsh7th/nvim-cmp",
+    },
   },
   {
     "hrsh7th/cmp-nvim-lsp",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/nvim-cmp"
-    }
+      "hrsh7th/nvim-cmp",
+    },
   },
   {
     "hrsh7th/cmp-path",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/nvim-cmp"
-    }
+      "hrsh7th/nvim-cmp",
+    },
   },
   {
-    "L3MON4D3/LuaSnip",
+    "hrsh7th/cmp-cmdline",
+    event = "CmdlineEnter",
+    dependencies = {
+      "hrsh7th/nvim-cmp",
+    },
+  },
+  {
+    "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     dependencies = {
       "saadparwaiz1/cmp_luasnip",
@@ -29,12 +36,16 @@ return {
     },
   },
   {
+    "L3MON4D3/LuaSnip",
+    version = "v2.*"
+  },
+  {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     config = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")
-      require("luasnip.loaders.from_vscode").lazy_load()
+      -- require("luasnip.loaders.from_vscode").lazy_load()
 
       cmp.setup({
         snippet = {
@@ -47,19 +58,26 @@ return {
             maxwidth = 50,
             ellipsis_char = "...",
             mode = "symbol_text",
-            menu = ({
+            menu = {
+              path = "[Path]",
               buffer = "[Buffer]",
               nvim_lsp = "[LSP]",
               luasnip = "[LuaSnip]",
-              nvim_lua = "[Lua]"
-            })
+              nvim_lua = "[Lua]",
+              orgmode = "[Org]",
+              ["vim-dadbod-completion"] = "[DB]",
+            },
           }),
         },
         window = {
-          completion = {
-              -- border = "rounded",
-              -- winhighlight = "Normal:CmpNormal",
-          }
+          completion = cmp.config.window.bordered({
+            border = "single",
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:Search",
+          }),
+          documentation = cmp.config.window.bordered({
+            border = "single",
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:Search",
+          }),
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -74,6 +92,14 @@ return {
           { name = "buffer" },
           { name = "path" },
         }),
+      })
+
+      -- Use buffer source for `/` and `?`
+      cmp.setup.cmdline({ "/", "?" }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = "buffer" },
+        },
       })
     end,
   },

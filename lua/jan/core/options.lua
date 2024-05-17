@@ -15,10 +15,19 @@ vim.opt.scrolloff = 8
 vim.opt.colorcolumn = "120"
 vim.opt.signcolumn = "yes"
 
+-- tabs
+vim.opt.autoindent = true
+-- vim.opt.noexpandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
 -- hidden chars
 vim.opt.list = true
 vim.opt.listchars = {
-  space = '⋅',
+  tab = '│·',
+  extends = '⟩',
+  precedes = '⟨',
+  trail = '·'
 }
 
 -- cursor line

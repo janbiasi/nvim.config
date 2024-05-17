@@ -1,5 +1,9 @@
 return {
   {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+  },
+  {
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
     dependencies = {
@@ -7,38 +11,63 @@ return {
       "nvim-tree/nvim-web-devicons",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make"
+        build = "make",
       },
     },
-    config = function()
-      local telescope = require("telescope")
-      local actions = require("telescope.actions")
-      local builtin = require("telescope.builtin")
-
-      telescope.setup({
+    opts = function()
+      return {
         defaults = {
-          path_display = { "truncate " },
-          mappings = {
-            i = {
-              ["<C-k>"] = actions.move_selection_previous, -- move to prev result
-              ["<C-j>"] = actions.move_selection_next, -- move to next result
-              ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-            },
+          vimgrep_arguments = {
+            "rg",
+            "-L",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+          },
+          previewer = true,
+          file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+          grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+          qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+        },
+        extensions = {
+          file_browser = {
+            theme = "ivy",
+            hijack_netrw = false,
           },
         },
-      })
+        extensions_list = {
+          "file_browser",
+          "fzf",
+          "lazygit",
+        },
+      }
+    end,
+    init = function()
+      local builtin = require("telescope.builtin")
+      local wk = require("which-key")
+      wk.register({
+        ["ff"] = { builtin.find_files, "Find File in cwd" },
+        ["fb"] = { builtin.buffers, "Find in Buffer" },
+        ["fg"] = { builtin.live_grep, "Find with Grep" },
+        ["fh"] = { builtin.help_tags, "Find Help" },
+        ["fs"] = { builtin.grep_string, "Find string" },
+        ["fn"] = {
+          ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
+          "File Browser",
+        },
+      }, { prefix = "<leader>" })
+    end,
+    config = function(_, opts)
+      local telescope = require("telescope")
 
-      telescope.load_extension("fzf")
+      telescope.setup(opts)
 
-      -- bindings for easier VSCode transition
-      vim.keymap.set("n", "<C-p>", builtin.find_files, {})
-      vim.keymap.set("n", "<C-s>", builtin.live_grep, { desc = "Find string in cwd" })
-
-      -- TODO: Verify bindings for ergonomics
-      vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Fuzzy find files in cwd" })
-      vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Fuzzy find recent files" })
-      vim.keymap.set("n", "<leader>fs", builtin.live_grep, { desc = "Find string in cwd" })
-      vim.keymap.set("n", "<leader>fc", builtin.grep_string, { desc = "Find string under cursor in cwd" })
-    end
-  }
+      for _, ext in ipairs(opts.extensions_list) do
+        telescope.load_extension(ext)
+      end
+    end,
+  },
 }

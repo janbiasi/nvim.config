@@ -33,6 +33,7 @@ return {
         "markdown",
         "prisma",
         "rust",
+        "sql",
         "tsx",
         "typescript",
         "vim",
