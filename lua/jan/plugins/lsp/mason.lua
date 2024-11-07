@@ -11,7 +11,7 @@ return {
       require("mason-lspconfig").setup({
         ensure_installed = {
           "lua_ls", -- Lua
-          "tsserver", -- TypeScript
+          "ts_ls", -- TypeScript
           "html", -- HTML
           "gopls", -- Go
           "golangci_lint_ls", -- Go
