@@ -8,6 +8,7 @@ return {
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-frecency.nvim',
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
@@ -15,9 +16,8 @@ return {
           return vim.fn.executable 'make' == 1
         end,
       },
-      {
-        'nvim-telescope/telescope-ui-select.nvim',
-      },
+
+      'nvim-telescope/telescope-ui-select.nvim',
       {
         'nvim-tree/nvim-web-devicons',
         enabled = vim.g.have_nerd_font,
@@ -49,11 +49,13 @@ return {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+          ['frecency'] = {}
         },
         extensions_list = {
           'file_browser',
           'fzf',
           'lazygit',
+          'frecency'
         },
       }
     end,
@@ -62,11 +64,11 @@ return {
       local wk = require 'which-key'
 
       wk.add {
-        { '<leader>f', group = 'file' },
-        { '<leader>ff', builtin.find_files, desc = 'Find files in cwd' },
-        { '<leader>fb', builtin.buffers, desc = 'Find in buffer' },
-        { '<leader>fg', builtin.live_grep, desc = 'Find with grep' },
-        { '<leader>fh', builtin.help_tags, desc = 'Find help' },
+        { '<leader>f',  group = 'file' },
+        { '<leader>ff', builtin.find_files,  desc = 'Find files in cwd' },
+        { '<leader>fb', builtin.buffers,     desc = 'Find in buffer' },
+        { '<leader>fg', builtin.live_grep,   desc = 'Find with grep' },
+        { '<leader>fh', builtin.help_tags,   desc = 'Find help' },
         { '<leader>fs', builtin.grep_string, desc = 'Find string with grep' },
       }
     end,

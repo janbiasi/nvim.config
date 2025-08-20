@@ -50,3 +50,6 @@ vim.opt.scrolloff = 10
 -- https://github.com/catppuccin/nvim/issues/412
 vim.o.pumblend = 0
 vim.o.winblend = 0
+
+
+vim.lsp.diagnostic.enable = true

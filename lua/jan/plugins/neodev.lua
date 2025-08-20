@@ -1,6 +1,6 @@
 return {
   {
-    "folke/neodev.nvim",
-    opts = {}
-  }
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+  },
 }
